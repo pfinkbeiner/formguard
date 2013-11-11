@@ -1,7 +1,7 @@
 ###
-# FormGuard - a rich javascript form validator.
+# FormGuard - A powerful, customizable, quick and easy jQuery plugin to validate your forms.
 #
-# @version v0.1-beta
+# @version v1.0
 # @author Patrick Finkbeiner @p_finkbeiner <finkbeiner.patrick@gmail.com>
 ###
 class FormGuard
