@@ -36,7 +36,7 @@ Apply your validators in `data-validate=""` attribute. You can combine them howe
 
 | key | description |
 | --- | ----------- |
-| `required` | Field must be filled. |
+| `required` | Field must be filled or checkbox must be checked. |
 | `min[X]` | Fields value must contains at least X characters. |
 | `max[X]` | Fields value may not exceed X characters. |
 | `email` | Fields value must be a valid email address. |
