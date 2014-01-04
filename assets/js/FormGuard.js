@@ -97,7 +97,7 @@
       me = this;
       fieldStats = 0;
       for (i = _i = 0, _ref = options.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
-        status = me.validateField((jQuery(field)).val(), options[i]);
+        status = me.validateField((jQuery(field)).val(), options[i], field);
         if (status === false) {
           fieldStats++;
         }
@@ -111,9 +111,12 @@
       }
     };
 
-    FormGuard.prototype.validateField = function(value, validator) {
+    FormGuard.prototype.validateField = function(value, validator, field) {
       var length, matchValue, me, name, status;
       me = this;
+      if (((jQuery(field)).attr('type')) === 'checkbox' && validator === 'required') {
+        validator = 'required-checkbox';
+      }
       if (/min\[/.test(validator)) {
         length = validator.replace(/(^.*\[|\].*$)/g, '');
         validator = 'minimum';
@@ -130,6 +133,9 @@
       switch (validator) {
         case "required":
           status = me.notEmpty(value);
+          break;
+        case "required-checkbox":
+          status = me.requiredCheckbox(field);
           break;
         case "email":
           status = me.validEmail(value);
@@ -148,6 +154,15 @@
           break;
         case "matches":
           status = me.matches(value, matchValue);
+      }
+      return status;
+    };
+
+    FormGuard.prototype.requiredCheckbox = function(field) {
+      var status;
+      status = false;
+      if (((jQuery(field)).is(':checked')) === true) {
+        status = true;
       }
       return status;
     };

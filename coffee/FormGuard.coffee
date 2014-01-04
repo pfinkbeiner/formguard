@@ -86,7 +86,7 @@ class FormGuard
     me = @
     fieldStats = 0
     for i in [0...options.length]
-      status = me.validateField (jQuery field).val(), options[i]
+      status = me.validateField (jQuery field).val(), options[i], field
       if status is false
         fieldStats++
     if fieldStats > 0
@@ -101,8 +101,10 @@ class FormGuard
   # @param [String] value
   # @param [String] validator
   # @return [Boolean]
-  validateField: (value, validator) ->
+  validateField: (value, validator, field) ->
     me = @
+    if ((jQuery field).attr 'type') is 'checkbox' and validator is 'required'
+      validator = 'required-checkbox'
 
     if /min\[/.test validator
       length = validator.replace( /(^.*\[|\].*$)/g, '' )
@@ -119,12 +121,23 @@ class FormGuard
 
     switch validator
       when "required" then status = me.notEmpty value
+      when "required-checkbox" then status = me.requiredCheckbox field
       when "email" then status = me.validEmail value
       when "integer" then status = me.isInteger value
       when "number" then status = me.isNumber value
       when "minimum" then status = me.validMin value, length
       when "maximum" then status = me.validMax value, length
       when "matches" then status = me.matches value, matchValue
+    status
+
+  # Validate a required checkbox
+  #
+  # @param [Html] field
+  # @return [Boolean]
+  requiredCheckbox: (field) ->
+    status = false
+    if ((jQuery field).is ':checked') is true
+       status = true
     status
 
   # Gets the value to be matched against.
